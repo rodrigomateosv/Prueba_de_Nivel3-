@@ -1,0 +1,104 @@
+import random
+
+class nodoPila(object):
+    """Clase nodo pila"""
+
+    info, sig = None, None
+
+class Pila(object):
+    """Clase Pila"""
+
+    def __init__(self):
+        self.cima = None
+        self.tamanio = 0
+
+    def apilar(self, dato):
+        """Apila el dato sobre la cima de la pila"""
+        nodo = nodoPila()
+        nodo.info = dato
+        nodo.sig = self.cima
+        self.cima = nodo
+        self.tamanio += 1
+
+    def desapilar(self):
+        """Desapila el elemento en la cima de la pila y lo devuelve"""
+        x = self.cima.info
+        self.cima = self.cima.sig
+        self.tamanio -= 1
+        return x
+
+    def pila_vacia(self):
+        """Devuelve true si la pila esta vacia"""
+        return self.cima is None
+
+class Carta:
+    def __init__(self, numero, palo):
+        self.numero = numero
+        self.palo = palo
+
+    def __repr__(self):
+        return f"{self.numero} de {self.palo}"
+
+def generar_mazo():
+    palos = ["espada", "basto", "copa", "oro"]
+    mazo = Pila()
+
+    cartas = [Carta(numero, palo) for palo in palos for numero in range(1, 13)]
+    random.shuffle(cartas)
+
+    for carta in cartas:
+        mazo.apilar(carta)
+
+    return mazo
+
+def separar_por_palo(mazo):
+    pilas_por_palo = {
+        "espada": Pila(),
+        "basto": Pila(),
+        "copa": Pila(),
+        "oro": Pila()
+    }
+
+    while not mazo.pila_vacia():
+        carta = mazo.desapilar()
+        pilas_por_palo[carta.palo].apilar(carta)
+
+    return pilas_por_palo
+
+def ordenar_pila(pila):
+    lista = []
+    while not pila.pila_vacia():
+        lista.append(pila.desapilar())
+
+    lista.sort(key=lambda carta: carta.numero)
+
+    for carta in lista:
+        pila.apilar(carta)
+
+def main():
+    mazo = generar_mazo()
+    print("Mazo generado:")
+    mazo_temp = mazo.cima
+    while mazo_temp:
+        print(mazo_temp.info)
+        mazo_temp = mazo_temp.sig
+    print()
+
+    pilas_por_palo = separar_por_palo(mazo)
+
+    for palo, pila in pilas_por_palo.items():
+        print(f"Pila de {palo}:")
+        pila_temp = pila.cima
+        while pila_temp:
+            print(pila_temp.info)
+            pila_temp = pila_temp.sig
+        print()
+
+    pila_a_ordenar = "espada"
+    ordenar_pila(pilas_por_palo[pila_a_ordenar])
+
+    print(f"Pila de {pila_a_ordenar} ordenada:")
+    pila_temp = pilas_por_palo[pila_a_ordenar].cima
+    while pila_temp:
+        print(pila_temp.info)
+       
