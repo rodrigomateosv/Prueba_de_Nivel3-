@@ -82,7 +82,5 @@ class Pila(object):
         """Devuelve true si la pila esta vacia"""
         return self.cima is None
 
-# A continuación se encuentra el código principal que utiliza las clases Pedido, Heap y Pila:
 
-if __name__ == "__main__":
-    main()
+

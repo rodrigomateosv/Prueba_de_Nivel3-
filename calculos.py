@@ -1,6 +1,6 @@
 # calculos.py
 
-from operaciones import Operaciones
+from ejercicio3 import Operaciones
 
 operaciones = Operaciones()
 
